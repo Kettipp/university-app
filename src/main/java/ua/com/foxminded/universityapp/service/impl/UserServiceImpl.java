@@ -8,7 +8,7 @@ import ua.com.foxminded.universityapp.service.UserService;
 
 import java.util.List;
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService<User> {
     private final UserRepository repository;
 
     @Autowired
@@ -17,13 +17,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void addAll(List<User> users) {
-        repository.saveAll(users);
+    public void add(User user) {
+        repository.save(user);
     }
 
     @Override
-    public void add(User user) {
-        repository.save(user);
+    public void addAll(List<User> entities) {
+        repository.saveAll(entities);
     }
 
     @Override

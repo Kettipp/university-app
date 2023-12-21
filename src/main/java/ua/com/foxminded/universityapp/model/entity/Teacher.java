@@ -1,8 +1,8 @@
 package ua.com.foxminded.universityapp.model.entity;
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -10,9 +10,13 @@ import java.util.List;
 import java.util.Set;
 @Entity
 @EqualsAndHashCode(callSuper = true)
+@Data
+@SuperBuilder
+@NoArgsConstructor
+@DiscriminatorValue("Teacher")
 public class Teacher extends User {
     @ManyToMany
-    @JoinTable(name = "teacher_courses",
+    @JoinTable(name = "teachers_courses",
             joinColumns = @JoinColumn(name = "teacher_id"),
             inverseJoinColumns = @JoinColumn(name = "course_id")
     )

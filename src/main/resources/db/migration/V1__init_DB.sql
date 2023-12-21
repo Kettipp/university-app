@@ -4,7 +4,7 @@ CREATE TABLE "groups"(
 );
 CREATE TABLE users(
     id BIGINT PRIMARY KEY,
-    data_type VARCHAR(50) NOT NULL,
+    role VARCHAR(50) NOT NULL,
     first_name VARCHAR(30) NOT NULL,
     last_name VARCHAR(30) NOT NULL,
     login VARCHAR(50) NOT NULL,
@@ -31,7 +31,7 @@ CREATE TABLE group_courses(
 CREATE TABLE class(
     id BIGINT PRIMARY KEY,
     day VARCHAR(20),
-    time BIGINT,
+    time VARCHAR(20),
     group_id BIGINT,
     course_id BIGINT,
     teacher_id BIGINT,

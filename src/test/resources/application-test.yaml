@@ -33,54 +33,17 @@ university:
   firstNames:
     - Liam
     - Olivia
-    - Noah
-    - Emma
-    - Oliver
-    - Charlotte
-    - James
-    - Amelia
-    - Elijah
-    - Sophia
-    - William
-    - Isabella
-    - Henry
-    - Ava
-    - Lucas
-    - Mia
-    - Benjamin
-    - Evelyn
-    - Theodore
-    - Luna
   lastNames:
     - Smith
     - Johnson
-    - Williams
-    - Brown
-    - Jones
-    - Garcia
-    - Miller
-    - Davis
-    - Wilson
-    - Anderson
-    - Thomas
-    - Taylor
-    - Moore
-    - Lee
-    - Thompson
-    - Clark
-    - White
-    - Walker
-    - Robinson
-    - Torres
   groupsLimit : 9
   groupsCount : 10
   loginSize: 6
   passwordSize: 8
   passwordSymbolLimit: 9
-  studentsCount: 200
-  teachersCount: 8
+  studentsCount: 1
+  teachersCount: 1
   adminFirstName: admin
   adminLastName: admin
   adminLogin: universityAdmin@com.ua
   adminPassword: 11111111
-isDebug: false
