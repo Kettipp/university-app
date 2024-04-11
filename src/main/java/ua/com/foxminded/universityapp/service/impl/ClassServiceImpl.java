@@ -32,12 +32,17 @@ public class ClassServiceImpl implements ClassService {
     }
 
     @Override
-    public Class getById(long id) {
-        return repository.getReferenceById(id);
+    public void deleteById(long id) {
+        repository.deleteById(id);
     }
 
     @Override
-    public void deleteById(long id) {
-        repository.deleteById(id);
+    public List<Class> getClassByGroupName(String groupName) {
+        return repository.findClassByGroupName(groupName);
+    }
+
+    @Override
+    public List<Class> getClassByTeacherName(String teacherFirstName, String teacherLastName) {
+        return  repository.findClassByTeacherName(teacherFirstName, teacherLastName);
     }
 }

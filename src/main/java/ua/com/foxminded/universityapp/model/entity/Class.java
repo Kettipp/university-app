@@ -33,4 +33,16 @@ public class Class {
     @ManyToOne
     @JoinColumn(name = "teacher_id")
     private Teacher teacher;
+
+
+    @Override
+    public String toString() {
+        return "Class{" +
+                "day=" + day + "\n" +
+                "time=" + time + "\n" +
+                "group=" + group + "\n" +
+                "course=" + course + "\n" +
+                "teacher=" + teacher + "\n" +
+                '}';
+    }
 }

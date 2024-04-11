@@ -1,0 +1,40 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="|${name}|"></title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;600&display=swap" rel="stylesheet">
+    <link th:href="@{create.css}" rel="stylesheet">
+    <link th:href="@{/styles/css/header.css}" rel="stylesheet">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<div th:replace="header :: header"></div>
+<div class="main">
+    <form th:action="@{/createNewUser}" method="post">
+        <div>
+            <h1>Create user</h1>
+            <div>
+                <input placeholder="User role" type="text" name="role">
+            </div>
+            <div>
+                <input placeholder="First name" type="text" name="firstName">
+            </div>
+            <div>
+                <input placeholder="Last name" type="text" name="lastName">
+            </div>
+            <div>
+                <input placeholder="Login" type="text" name="username">
+            </div>
+            <div>
+                <input placeholder="Password" type="text" name="password">
+                <input type="submit" value="Create">
+            </div>
+        </div>
+    </form>
+</div>
+<script></script>
+<script type="text/javascript" th:src="@{/js/schedule.js}"></script>
+</body>
+</html>

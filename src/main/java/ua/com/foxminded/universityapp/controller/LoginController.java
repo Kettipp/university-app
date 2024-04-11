@@ -2,23 +2,20 @@ package ua.com.foxminded.universityapp.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
+
 
 @Controller
-public class HttpController {
-    @GetMapping("/")
-    public String schedulePage(Model model) {
-        return "schedule";
-    }
+public class LoginController {
 
     @GetMapping("/login")
     public String loginPage(Model model) {
         model.addAttribute("name", "University Schedule");
         return "login";
     }
-
-    @GetMapping("/admin")
-    public String adminPage(Model model) {
-        return "admin";
+    @GetMapping("/logout")
+    public String logout() {
+        return "login";
     }
+
 }

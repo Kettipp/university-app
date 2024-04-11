@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Title</title>
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;600&display=swap" rel="stylesheet">
+    <link th:href="@{singleSchedule.css}" rel="stylesheet">
+    <link th:href="@{/styles/css/header.css}" rel="stylesheet">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<div th:replace="header :: header"></div>
+<table>
+    <thead>
+    <tr>
+        <th class="day" colspan="2">Day</th>
+        <th class="time" colspan="4">Time</th>
+    </tr>
+    <tr>
+        <th>Date</th>
+        <th>DofW</th>
+        <th th:each="classTime : ${times}" th:text="${classTime}"></th>
+    </tr>
+    </thead>
+    <tbody th:each="kv : ${schedule}">
+    <tr>
+        <td class="date" th:text="${kv.key}"></td>
+        <td class="dayOfWeek" th:text="${kv.key.getDayOfWeek()}"></td>
+        <td th:each="class : ${kv.value}"
+            th:text="${class.course.name}">
+        </td>
+    </tr>
+    </tbody>
+</table>
+<script type="text/javascript" th:src="@{/js/schedule.js}"></script>
+</body>
+</html>

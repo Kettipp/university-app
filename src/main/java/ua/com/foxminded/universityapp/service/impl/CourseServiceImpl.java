@@ -32,12 +32,12 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public Course getById(long id) {
-        return repository.getReferenceById(id);
+    public void deleteById(long id) {
+        repository.deleteById(id);
     }
 
     @Override
-    public void deleteById(long id) {
-        repository.deleteById(id);
+    public Course getByName(String courseName) {
+        return repository.findByName(courseName);
     }
 }

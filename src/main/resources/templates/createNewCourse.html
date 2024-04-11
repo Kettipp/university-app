@@ -1,0 +1,25 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="|${name}|"></title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;600&display=swap" rel="stylesheet">
+    <link th:href="@{/styles/css/singleSchedule.css}" rel="stylesheet">
+    <link th:href="@{/styles/css/header.css}" rel="stylesheet">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<div th:replace="header :: header"></div>
+<div class="main">
+    <form th:action="@{/createNewCourse}" name="createCourse" method="post">
+        <div>
+            <h1>Create course</h1>
+            <input placeholder="Course name" type="text" name="courseName">
+            <input type="submit" value="Create">
+        </div>
+    </form>
+</div>
+<script type="text/javascript" th:src="@{/js/schedule.js}"></script>
+</body>
+</html>

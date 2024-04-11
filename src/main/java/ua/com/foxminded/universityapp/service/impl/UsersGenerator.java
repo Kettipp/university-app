@@ -2,6 +2,7 @@ package ua.com.foxminded.universityapp.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import ua.com.foxminded.universityapp.config.UniversityProperties;
@@ -24,23 +25,20 @@ public class UsersGenerator implements Generate<User> {
     private final  int teachersCount;
     private final  String adminFirstName;
     private final  String adminLastName;
-    private final  String adminLogin;
-    private final  String adminPassword;
     private final UniversityProperties properties;
     private final GroupServiceImpl groupService;
     private final CourseServiceImpl courseService;
     private final UserService<Teacher> userService;
+    private final PasswordEncoder passwordEncoder;
     private final Random random = new Random();
 
     @Autowired
     public UsersGenerator(@Value("${university.loginSize}") int loginSize, @Value("${university.passwordSize}") int passwordSize,
                           @Value("${university.passwordSymbolLimit}") int passwordSymbolLimit, @Value("${university.studentsCount}") int studentsCount,
                           @Value("${university.teachersCount}") int teachersCount, @Value("${university.adminFirstName}") String adminFirstName,
-                          @Value("${university.adminLastName}") String adminLastName, @Value("${university.adminLogin}") String adminLogin,
-                          @Value("${university.adminPassword}") String adminPassword,
-                          UniversityProperties properties,
-                          GroupServiceImpl groupService,
-                          CourseServiceImpl courseService, UserService userService) {
+                          @Value("${university.adminLastName}") String adminLastName, UniversityProperties properties,
+                          GroupServiceImpl groupService, CourseServiceImpl courseService,
+                          UserService userService, PasswordEncoder passwordEncoder) {
         this.loginSize = loginSize;
         this.passwordSize = passwordSize;
         this.passwordSymbolLimit = passwordSymbolLimit;
@@ -48,12 +46,11 @@ public class UsersGenerator implements Generate<User> {
         this.teachersCount = teachersCount;
         this.adminFirstName = adminFirstName;
         this.adminLastName = adminLastName;
-        this.adminLogin = adminLogin;
-        this.adminPassword = adminPassword;
         this.properties = properties;
         this.groupService = groupService;
         this.courseService = courseService;
         this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -75,7 +72,7 @@ public class UsersGenerator implements Generate<User> {
                     user = Student.builder()
                             .firstName(user.getFirstName())
                             .lastName(user.getLastName())
-                            .login(user.getLogin())
+                            .username(user.getUsername())
                             .password(user.getPassword())
                             .build();
                     Student student = (Student) user;
@@ -93,26 +90,26 @@ public class UsersGenerator implements Generate<User> {
                     user = Teacher.builder()
                             .firstName(user.getFirstName())
                             .lastName(user.getLastName())
-                            .login(user.getLogin())
+                            .username(user.getUsername())
                             .password(user.getPassword())
                             .build();
                     Teacher teacher = (Teacher) user;
-                    Set<Course> coursesSet = pick2courses(courseStore, courses);
+                    Set<Course> coursesSet = pickTwoCourses(courseStore, courses);
                     teacher.setCourses(coursesSet);
                     return teacher;
                 }
         ).toList();
         for(Teacher teacher : teachers) {
-            List<String> courses1 = teacher.getCourses().stream().map(Course::getName).toList();
+            List<String> coursesName = teacher.getCourses().stream().map(Course::getName).toList();
             courses.stream()
-                    .filter(course -> courses1.contains(course.getName()))
+                    .filter(course -> coursesName.contains(course.getName()))
                     .forEach(course -> course.getTeachers().add(teacher));
         }
         userService.addAll(teachers);
         return teachers;
     }
 
-    private Set<Course> pick2courses(List<Course> courseStore, List<Course> courses) {
+    private Set<Course> pickTwoCourses(List<Course> courseStore, List<Course> courses) {
         if (courseStore.size() >= 2) {
             return Set.of(
                     courseStore.remove(0),
@@ -135,8 +132,8 @@ public class UsersGenerator implements Generate<User> {
         return Admin.builder()
                 .firstName(adminFirstName)
                 .lastName(adminLastName)
-                .login(adminLogin)
-                .password(adminPassword)
+                .username(loginGenerate())
+                .password(passwordGenerate())
                 .build();
     }
 
@@ -150,7 +147,7 @@ public class UsersGenerator implements Generate<User> {
             User user = User.builder()
                     .firstName(first)
                     .lastName(last)
-                    .login(loginGenerate())
+                    .username(loginGenerate())
                     .password(passwordGenerate())
                     .build();
             users.add(user);
@@ -167,10 +164,11 @@ public class UsersGenerator implements Generate<User> {
     }
 
     private String passwordGenerate() {
-        StringJoiner password = new StringJoiner("");
-        for (int i = 0; i < passwordSize; i++) {
-            password.add(String.valueOf(random.nextInt(passwordSymbolLimit)));
-        }
-        return password.toString();
+//        StringJoiner password = new StringJoiner("");
+//        for (int i = 0; i < passwordSize; i++) {
+//            password.add(String.valueOf(random.nextInt(passwordSymbolLimit)));
+//        }
+        String password = "00000000";
+        return passwordEncoder.encode(password);
     }
 }

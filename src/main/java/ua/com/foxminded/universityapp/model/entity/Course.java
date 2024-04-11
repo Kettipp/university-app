@@ -30,4 +30,9 @@ public class Course {
     @ManyToMany(mappedBy = "courses")
     @Builder.Default
     private List<Teacher> teachers = new ArrayList<>();
+
+    @Override
+    public String toString() {
+        return "{name=" + name + "}";
+    }
 }

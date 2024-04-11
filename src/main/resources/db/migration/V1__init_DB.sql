@@ -7,8 +7,8 @@ CREATE TABLE users(
     role VARCHAR(50) NOT NULL,
     first_name VARCHAR(30) NOT NULL,
     last_name VARCHAR(30) NOT NULL,
-    login VARCHAR(50) NOT NULL,
-    password VARCHAR(50) NOT NULL,
+    username VARCHAR(50) NOT NULL,
+    password VARCHAR(100) NOT NULL,
     group_id BIGINT,
     FOREIGN KEY (group_id) REFERENCES "groups" (id) ON DELETE SET NULL
 );

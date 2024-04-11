@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 @Entity
-//@Data
+@Data
 @SuperBuilder
 @NoArgsConstructor
-//@DiscriminatorValue("Admin")
+@DiscriminatorValue("Admin")
 public class Admin extends User{
 }

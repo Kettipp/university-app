@@ -7,6 +7,7 @@ import ua.com.foxminded.universityapp.model.entity.Course;
 import ua.com.foxminded.universityapp.model.entity.Group;
 import ua.com.foxminded.universityapp.service.Generate;
 
+import java.time.DayOfWeek;
 import java.util.*;
 
 @Component

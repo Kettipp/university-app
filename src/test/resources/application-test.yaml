@@ -36,8 +36,8 @@ university:
   lastNames:
     - Smith
     - Johnson
-  groupsLimit : 9
-  groupsCount : 10
+  groupsLimit : 7
+  groupsCount : 8
   loginSize: 6
   passwordSize: 8
   passwordSymbolLimit: 9

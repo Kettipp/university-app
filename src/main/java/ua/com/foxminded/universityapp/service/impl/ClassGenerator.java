@@ -3,68 +3,77 @@ package ua.com.foxminded.universityapp.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import ua.com.foxminded.universityapp.model.ClassRepository;
 import ua.com.foxminded.universityapp.model.entity.*;
 import ua.com.foxminded.universityapp.model.entity.Class;
-import ua.com.foxminded.universityapp.model.entity.Class.ClassBuilder;
+import ua.com.foxminded.universityapp.service.CourseService;
 import ua.com.foxminded.universityapp.service.Generate;
+import ua.com.foxminded.universityapp.service.GroupService;
+import ua.com.foxminded.universityapp.service.UserService;
 
 import java.time.DayOfWeek;
 import java.util.*;
 
 @Component
 public class ClassGenerator implements Generate<Class> {
-    private final GroupServiceImpl groupService;
+    private static final int ATTEMPT_COUNTER = 5;
+    private final GroupService groupService;
+    private final CourseService courseService;
+    private final Random random = new Random();
 
     @Autowired
-    public ClassGenerator(GroupServiceImpl groupService) {
+    public ClassGenerator(GroupService groupService, CourseService courseService) {
         this.groupService = groupService;
-    }
-
-    private Course pickCourse(HashMap<Course, Integer> storage) {
-        storage.forEach((k, v) -> {
-            if (v == 2) {
-                storage.remove(k);
-            }
-        });
-        return storage.keySet().stream().toList().get(new Random().nextInt(storage.size()));
+        this.courseService = courseService;
     }
 
     @Override
     @Transactional
     public List<Class> generate() {
-        List<Group> groups = groupService.getAll();
         List<Class> classes = new ArrayList<>();
-        for (Group group : groups) {
-            List<ClassBuilder> classBuilders =
-                    Arrays.stream(ClassTime.values()).map(ct ->  Class.builder().group(group).time(ct)).toList();
-
-            HashMap<Course, Integer> storage = new HashMap<>();
-            group.getCourses().forEach(c -> storage.put(c, 0));
-            for (DayOfWeek day : DayOfWeek.values()) {
-                if(day != DayOfWeek.SATURDAY && day != DayOfWeek.SUNDAY) {
-                    classes.addAll(
-                            classBuilders
-                                    .stream()
-                                    .map(cb -> {
-                                        Course course = pickCourse(storage);
-                                        List<Teacher> teachers = course.getTeachers();
-                                        return cb
-                                                .day(day)
-                                                .course(course)
-                                                .teacher(peekTeacher(teachers))
-                                                .build();
-                                    })
-                                    .toList()
-                    );
+        List<Course> courses = courseService.getAll();
+        List<Group> groups = groupService.getAll();
+        for (DayOfWeek day : DayOfWeek.values()) {
+            for (Group group : groups) {
+                List<Course> availableCourses = new ArrayList<>(courses);
+                for (ClassTime time : ClassTime.values()) {
+                    for (int i = 0; i < ATTEMPT_COUNTER; i++) {
+                        Optional<Class> clas = generateRandomClass(
+                                availableCourses,
+                                classes,
+                                day,
+                                time,
+                                group
+                        );
+                        if (clas.isPresent()) {
+                            classes.add(clas.get());
+                            break;
+                        }
+                    }
                 }
             }
         }
         return classes;
     }
 
-    private Teacher peekTeacher(List<Teacher> teachers) {
-        return teachers.stream().findAny().get();
+    private Optional<Class> generateRandomClass(List<Course> availableCourses, List<Class> classes, DayOfWeek day, ClassTime time, Group group) {
+        Course course = availableCourses.remove(random.nextInt(availableCourses.size()));
+        List<Teacher> teachers = course.getTeachers();
+        Optional<Teacher> first = teachers
+                .stream()
+                .filter(t -> classes.stream()
+                        .noneMatch(cl ->
+                                cl.getDay().equals(day)
+                                        && cl.getTime().equals(time)
+                                        && cl.getTeacher().equals(t)
+                        ))
+                .findFirst();
+        return first.map(teacher -> Class.builder()
+                .day(day)
+                .time(time)
+                .group(group)
+                .course(course)
+                .teacher(teacher)
+                .build());
     }
-
-
 }

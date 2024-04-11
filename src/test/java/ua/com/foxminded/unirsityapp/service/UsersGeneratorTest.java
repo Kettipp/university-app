@@ -55,9 +55,9 @@ public class UsersGeneratorTest {
         when(courseRepository.findAll()).thenReturn(c);
 
         List<User> expected = new ArrayList<>();
-        expected.add(Student.builder().firstName("Liam").lastName("Smith").login("aaaaa").password("111").group(group.get(0)).build());
-        expected.add(Teacher.builder().firstName("Olivia").lastName("Johnson").login("aaaaa").password("111").courses(courses).build());
-        expected.add(Admin.builder().firstName("admin").lastName("admin").login("universityAdmin@com.ua").password("11111111").build());
+        expected.add(Student.builder().firstName("Liam").lastName("Smith").username("aaaaa").password("111").group(group.get(0)).build());
+        expected.add(Teacher.builder().firstName("Olivia").lastName("Johnson").username("aaaaa").password("111").courses(courses).build());
+        expected.add(Admin.builder().firstName("admin").lastName("admin").username("universityAdmin@com.ua").password("11111111").build());
         List<String> expectedNames = expected.stream().map(User::getFirstName).toList();
 
 

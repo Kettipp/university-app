@@ -4,8 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-import java.util.Objects;
-
 @Data
 @SuperBuilder
 @AllArgsConstructor
@@ -15,15 +13,17 @@ import java.util.Objects;
 @DiscriminatorColumn(name = "role", discriminatorType = DiscriminatorType.STRING)
 @Table(name = "users")
 public class User {
+    @Builder.Default
     @Id
     @SequenceGenerator(name = "u_seq", sequenceName = "users_sequence", allocationSize = 100)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "u_seq")
-    private long id;
+    private long id = 0L;
     @Column(name = "first_name")
     private String firstName;
     @Column(name = "last_name")
     private String lastName;
-    private String login;
+    private String username;
     private String password;
-//custom equals may be required
+    @Column(name = "role", insertable=false, updatable = false)
+    private String role;
 }

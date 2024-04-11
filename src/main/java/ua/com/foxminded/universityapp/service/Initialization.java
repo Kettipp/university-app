@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ua.com.foxminded.universityapp.model.entity.Course;
 import ua.com.foxminded.universityapp.model.entity.Group;
+import ua.com.foxminded.universityapp.model.entity.User;
 import ua.com.foxminded.universityapp.service.impl.ClassGenerator;
 import ua.com.foxminded.universityapp.service.impl.CourseGenerator;
 import ua.com.foxminded.universityapp.service.impl.GroupGenerator;
@@ -17,7 +18,7 @@ public class Initialization {
     private final GroupGenerator groupGenerator;
     private final CourseGenerator courseGenerator;
     private final ClassGenerator classGenerator;
-    private final UserService userService;
+    private final UserService<User> userService;
     private final GroupService groupService;
     private final CourseService courseService;
     private final ClassService classService;
@@ -26,7 +27,7 @@ public class Initialization {
     @Autowired
     public Initialization(UsersGenerator usersGenerator, GroupGenerator groupGenerator,
                           CourseGenerator courseGenerator, ClassGenerator classGenerator,
-                          UserService userService, GroupService groupService,
+                          UserService<User> userService, GroupService groupService,
                           CourseService courseService, ClassService classService, CourseIdDistributor courseIdDistributor) {
         this.usersGenerator = usersGenerator;
         this.groupGenerator = groupGenerator;
@@ -46,6 +47,5 @@ public class Initialization {
         groupService.addAll(groups);
         userService.addAll(usersGenerator.generate());
         classService.addAll(classGenerator.generate());
-
     }
 }

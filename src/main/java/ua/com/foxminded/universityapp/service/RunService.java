@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
+import ua.com.foxminded.universityapp.model.entity.Teacher;
 
 @Component
 public class RunService implements ApplicationRunner {

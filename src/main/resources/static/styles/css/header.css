@@ -1,0 +1,47 @@
+header{
+    height: 9%;
+    font-family: Comfortaa;
+    font-weight: bolder;
+    color: midnightblue;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10px;
+    border-bottom: 1px solid midnightblue;
+    background-color: white;
+}
+.teachersChoice, .groupsChoice{
+    margin: 1%;
+    font-weight: bolder;
+    font-size: 1.3vw;
+    display: flex;
+    align-items: center;
+}
+label {
+    margin-right: 10px;
+}
+.selectTeachers, .selectGroups{
+    border: 2px solid rgba(0, 0, 255, .2);
+    background-color: rgb(42, 82, 190);
+    color: white;
+    font-size: medium;
+    font-family: Comfortaa;
+    text-align: center;
+}
+.edit{
+    margin-right: auto;
+    width: 45%;
+}
+a{
+    font-size: large;
+    padding: 2%;
+}
+a:visited {
+    color: midnightblue;
+}
+a:hover {
+    color: dodgerblue;
+}
+option{
+    font-family: Comfortaa;
+}

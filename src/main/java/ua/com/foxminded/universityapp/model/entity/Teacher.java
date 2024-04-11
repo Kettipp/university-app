@@ -22,6 +22,12 @@ public class Teacher extends User {
     )
     @Builder.Default
     private Set<Course> courses = new HashSet<>();
+    @Builder.Default
     @OneToMany(mappedBy = "teacher")
     private List<Class> clas = new ArrayList<>();
+
+    @Override
+    public String toString() {
+        return "{name: " + super.getFirstName() + ", secondName: " + super.getLastName() + "}";
+    }
 }

@@ -1,0 +1,43 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="|${name}|"></title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;600&display=swap" rel="stylesheet">
+    <link th:href="@{/styles/css/schedule.css}" rel="stylesheet">
+    <link th:href="@{/styles/css/header.css}" rel="stylesheet">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<div th:replace="header :: header"></div>
+<table>
+    <thead>
+    <tr>
+        <th class="date" colspan="3">Date</th>
+        <th class="group" colspan="10">Group</th>
+    </tr>
+    <tr>
+        <th>Date</th>
+        <th>DofW</th>
+        <th>Time</th>
+        <th th:each="group : ${groups}" th:text="${group.name}"></th>
+    </tr>
+    </thead>
+    <tbody th:each="schedule : ${schedules}">
+    <tr>
+        <td class="d" th:name="date" rowspan="5" th:text="${schedule.date}"></td>
+        <td class="day" th:name="day" rowspan="5" th:text="${schedule.day}"></td>
+    </tr>
+    <tr th:each="kv : ${schedule.classes}">
+        <td class="times" th:name="time" th:text="${kv.key.getTimeSlot()}"></td>
+        <td th:each="class: ${kv.value}"
+            th:text="${class.course.name + '/' + class.teacher.firstName + ' ' + class.teacher.lastName + ' ' + class.day + ' ' + class.time + ' ' + class.group.name}">
+        </td>
+    </tr>
+    </tbody>
+</table>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script type="text/javascript" th:src="@{/js/schedule.js}"></script>
+</body>
+</html>

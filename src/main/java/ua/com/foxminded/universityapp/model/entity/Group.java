@@ -1,10 +1,7 @@
 package ua.com.foxminded.universityapp.model.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -15,6 +12,7 @@ import java.util.Set;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
 @Entity
 @Table(name = "groups")
 public class Group {
@@ -35,5 +33,10 @@ public class Group {
             inverseJoinColumns = @JoinColumn(name = "course_id"))
     @Builder.Default
     private Set<Course> courses = new HashSet<>();
+
+    @Override
+    public String toString() {
+        return "{name=" + name + "}";
+    }
 }
 

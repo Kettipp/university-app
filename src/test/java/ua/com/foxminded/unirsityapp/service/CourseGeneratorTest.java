@@ -1,12 +1,10 @@
 package ua.com.foxminded.unirsityapp.service;
 
-import org.junit.Assert;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestPropertySource;
 import ua.com.foxminded.universityapp.config.UniversityProperties;
 import ua.com.foxminded.universityapp.model.entity.Course;
 import ua.com.foxminded.universityapp.service.Generate;

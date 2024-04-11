@@ -35,6 +35,32 @@ img{vertical-align: top;}
 
 h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight: 400;}
 
-h1{
-    font-size: 120px;
+body{
+    background-color: #f5f5f5;
+}
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th, td {
+    border: 1px solid #0B2559;
+    padding: 8px;
+    text-align: center;
+    font-family: Comfortaa;
+    font-weight: bolder;
+    color: black;
+}
+th {
+    background-color: rgb(42, 82, 190);
+    color: white;
+}
+.d, .times, .day {
+    background-color:rgb(224, 233, 255);
+}
+.date {
+    width: 15%;
+}
+.group{
+    width: 85%;
 }

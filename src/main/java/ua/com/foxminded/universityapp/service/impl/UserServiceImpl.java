@@ -1,8 +1,10 @@
 package ua.com.foxminded.universityapp.service.impl;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ua.com.foxminded.universityapp.model.UserRepository;
+import ua.com.foxminded.universityapp.model.entity.Teacher;
 import ua.com.foxminded.universityapp.model.entity.User;
 import ua.com.foxminded.universityapp.service.UserService;
 
@@ -32,12 +34,17 @@ public class UserServiceImpl implements UserService<User> {
     }
 
     @Override
-    public User getById(long id) {
-        return repository.getReferenceById(id);
+    public void deleteById(long id) {
+        repository.deleteById(id);
     }
 
     @Override
-    public void deleteById(long id) {
-        repository.deleteById(id);
+    public List<Teacher> getTeachers() {
+       return repository.findTeachers();
+    }
+
+    @Override
+    public User getByTeacherName(String firstName, String lastName) {
+        return repository.findByTeacherName(firstName, lastName);
     }
 }

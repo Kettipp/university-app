@@ -4,8 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ua.com.foxminded.universityapp.config.UniversityProperties;
 import ua.com.foxminded.universityapp.model.entity.Course;
+import ua.com.foxminded.universityapp.model.entity.Group;
 import ua.com.foxminded.universityapp.service.Generate;
 
+import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.List;
 @Component

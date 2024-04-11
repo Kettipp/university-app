@@ -1,22 +1,37 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title th:text="|${name}!|"> </title>
+    <title th:text="|${name}|"></title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;600&display=swap" rel="stylesheet">
     <link th:href="@{/styles/css/login.css}" rel="stylesheet">
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 </head>
 <body>
-    <form action="#" method="get" enctype="multipart/form-data"></form>
-    <h1 th:text="Login"></h1>
-<div>Please enter your login and password</div>
+<div th:if="${param.error}">
+    Invalid username or password.
+</div>
+<div th:if="${param.logout}">
+    You have been logged out.
+</div>
+<div class="login">
+    <h1>Login</h1>
     <div>
-        <input placeholder="Email" type="text" name="username">
+        <h2>Please enter your email and password</h2>
     </div>
-    <div>
-        <input placeholder="Password" type="password" name="userpassword">
-    </div>
-<button type="submit">Login</button>
-
-
+    <form name="main" th:action="@{/login}" method="post" enctype="multipart/form-data">
+        <div>
+            <div>
+                <input placeholder="Email" type="text" name="username">
+            </div>
+            <div>
+                <input placeholder="Password" type="password" name="password">
+            </div>
+        </div>
+        <button type="submit">Login</button>
+    </form>
+</div>
+<script type="text/javascript" th:src="@{/js/login.js}"></script>
 </body>
 </html>

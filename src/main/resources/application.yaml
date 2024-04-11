@@ -30,6 +30,8 @@ university:
     - English
     - Sports
     - Music
+    - Music1
+    - Music2
   firstNames:
     - Liam
     - Olivia
@@ -72,15 +74,13 @@ university:
     - Walker
     - Robinson
     - Torres
-  groupsLimit : 9
-  groupsCount : 10
+  groupsLimit : 4
+  groupsCount : 5
   loginSize: 6
   passwordSize: 8
   passwordSymbolLimit: 9
   studentsCount: 200
-  teachersCount: 8
+  teachersCount: 12
   adminFirstName: admin
   adminLastName: admin
-  adminLogin: universityAdmin@com.ua
-  adminPassword: 11111111
 isDebug: false
