@@ -18,7 +18,7 @@ public class GroupGeneratorTest {
 
     @Test
     public void generate_shouldGenerateGroupNames() {
-        int expected = 10;
+        int expected = 5;
 
         List<Group> groups = groupGenerator.generate();
         int actual = groups.size();

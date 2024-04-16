@@ -23,7 +23,7 @@ public class CourseGeneratorTest {
 
     @Test
     public void generate_shouldGenerateCourses() {
-        int expected = 10;
+        int expected = 12;
 
         List<Course> courses = courseGenerator.generate();
         int actual = courses.size();

@@ -7,6 +7,7 @@ import ua.com.foxminded.universityapp.model.entity.Class;
 import ua.com.foxminded.universityapp.service.ClassService;
 
 import java.util.List;
+
 @Service
 public class ClassServiceImpl implements ClassService {
     private final ClassRepository repository;

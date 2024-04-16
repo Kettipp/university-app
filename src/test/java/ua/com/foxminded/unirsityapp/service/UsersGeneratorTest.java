@@ -4,19 +4,16 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
+import ua.com.foxminded.universityapp.config.SecurityConfig;
 import ua.com.foxminded.universityapp.config.UniversityProperties;
 import ua.com.foxminded.universityapp.model.CourseRepository;
 import ua.com.foxminded.universityapp.model.GroupRepository;
 import ua.com.foxminded.universityapp.model.UserRepository;
 import ua.com.foxminded.universityapp.model.entity.*;
 import ua.com.foxminded.universityapp.service.Generate;
-import ua.com.foxminded.universityapp.service.impl.CourseServiceImpl;
-import ua.com.foxminded.universityapp.service.impl.GroupServiceImpl;
-import ua.com.foxminded.universityapp.service.impl.UserServiceImpl;
-import ua.com.foxminded.universityapp.service.impl.UsersGenerator;
+import ua.com.foxminded.universityapp.service.impl.*;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -26,7 +23,10 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest(classes = {UsersGenerator.class, GroupServiceImpl.class, CourseServiceImpl.class, UserServiceImpl.class})
+@SpringBootTest(classes = {
+        UsersGenerator.class, GroupServiceImpl.class, CourseServiceImpl.class,
+        UserServiceImpl.class, SecurityConfig.class, CustomUserDetailsService.class
+})
 @EnableConfigurationProperties(value = UniversityProperties.class)
 @ActiveProfiles("test")
 public class UsersGeneratorTest {

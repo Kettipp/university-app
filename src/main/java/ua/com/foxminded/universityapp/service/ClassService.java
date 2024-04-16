@@ -1,6 +1,5 @@
 package ua.com.foxminded.universityapp.service;
 
-import org.springframework.data.repository.query.Param;
 import ua.com.foxminded.universityapp.model.entity.Class;
 
 import java.util.List;

@@ -1,15 +1,18 @@
 package ua.com.foxminded.unirsityapp.service;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import ua.com.foxminded.universityapp.config.UniversityProperties;
+import ua.com.foxminded.universityapp.model.CourseRepository;
 import ua.com.foxminded.universityapp.model.GroupRepository;
 import ua.com.foxminded.universityapp.model.entity.*;
 import ua.com.foxminded.universityapp.model.entity.Class;
 import ua.com.foxminded.universityapp.service.Generate;
 import ua.com.foxminded.universityapp.service.impl.ClassGenerator;
+import ua.com.foxminded.universityapp.service.impl.CourseServiceImpl;
 import ua.com.foxminded.universityapp.service.impl.GroupServiceImpl;
 
 import java.time.DayOfWeek;
@@ -19,17 +22,16 @@ import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest(classes = {ClassGenerator.class, GroupServiceImpl.class})
+@SpringBootTest(classes = {ClassGenerator.class, GroupServiceImpl.class, CourseServiceImpl.class})
+@EnableConfigurationProperties(value = UniversityProperties.class)
 public class ClassGeneratorTest {
     private static final int CLASSES_COUNT = 20;
     @MockBean
     private static GroupRepository groupRepository;
-
+    @MockBean
+    private static CourseRepository courseRepository;
     @Autowired
     private Generate<Class> classGenerate;
-
-    @Autowired
-    private ClassGenerator clgn;
     private List<Class> classes;
 
     @Test
@@ -48,8 +50,8 @@ public class ClassGeneratorTest {
         groups.add(Group.builder().id(1).name("group").courses(courses).build());
 
         when(groupRepository.findAll()).thenReturn(groups);
+        when(courseRepository.findAll()).thenReturn(courses.stream().toList());
         List<Class> classes = classGenerate.generate();
-
         assertEquals(CLASSES_COUNT, classes.size());
 
         for (Class clas : classes) {
@@ -75,6 +77,7 @@ public class ClassGeneratorTest {
         groups.add(Group.builder().id(1).name("FIRST_G").courses(courses).build());
         groups.add(Group.builder().id(2).name("SECOND_G").courses(courses).build());
         when(groupRepository.findAll()).thenReturn(groups);
+        when(courseRepository.findAll()).thenReturn(courses.stream().toList());
         classes = classGenerate.generate();
 
         Map<Group, List<Class>> collect = classes.stream().collect(Collectors.groupingBy(Class::getGroup));
@@ -108,6 +111,7 @@ public class ClassGeneratorTest {
         groups.add(Group.builder().id(1).name("FIRST_G").courses(courses).build());
         groups.add(Group.builder().id(2).name("SECOND_G").courses(courses).build());
         when(groupRepository.findAll()).thenReturn(groups);
+        when(courseRepository.findAll()).thenReturn(courses.stream().toList());
         classes = classGenerate.generate();
 
         Map<Teacher, List<Class>> collect = classes.stream().collect(Collectors.groupingBy(Class::getTeacher));
@@ -121,23 +125,6 @@ public class ClassGeneratorTest {
                 }
             }
         }
-    }
-
-    @Test
-    public void pickCourse() {
-        List<Class> classes = new ArrayList<>();
-        classes.add(Class.builder().day(DayOfWeek.MONDAY).time(ClassTime.FIRST).course(Course.builder().name("Biology").build()).build());
-
-        Set<Course> courses = new HashSet<>();
-        courses.add(Course.builder().name("Biology").build());
-        courses.add(Course.builder().name("Music").build());
-
-        Group group = Group.builder().name("group1").classes(classes).courses(courses).build();
-        String expected = "Music";
-//        Course course = clgn.pickCourse(group.getCourses().stream().toList(), group, DayOfWeek.MONDAY);
-
-//        String actual = course.getName();
-//        assertEquals(expected, actual);
     }
 
     private Course makeCourse(String value, Teacher t) {

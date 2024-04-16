@@ -3,13 +3,11 @@ package ua.com.foxminded.universityapp.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import ua.com.foxminded.universityapp.model.ClassRepository;
 import ua.com.foxminded.universityapp.model.entity.*;
 import ua.com.foxminded.universityapp.model.entity.Class;
 import ua.com.foxminded.universityapp.service.CourseService;
 import ua.com.foxminded.universityapp.service.Generate;
 import ua.com.foxminded.universityapp.service.GroupService;
-import ua.com.foxminded.universityapp.service.UserService;
 
 import java.time.DayOfWeek;
 import java.util.*;
@@ -34,6 +32,7 @@ public class ClassGenerator implements Generate<Class> {
         List<Course> courses = courseService.getAll();
         List<Group> groups = groupService.getAll();
         for (DayOfWeek day : DayOfWeek.values()) {
+            if (day.equals(DayOfWeek.SATURDAY) || day.equals(DayOfWeek.SUNDAY)) continue;
             for (Group group : groups) {
                 List<Course> availableCourses = new ArrayList<>(courses);
                 for (ClassTime time : ClassTime.values()) {
