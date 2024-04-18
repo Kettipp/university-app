@@ -2,6 +2,7 @@ package ua.com.foxminded.universityapp.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ua.com.foxminded.universityapp.model.entity.*;
@@ -93,21 +94,16 @@ public class AdminController {
         return "editSchedule";
     }
 
+    @Transactional
     @PostMapping("/editSchedule/delete")
     public String deleteClass(@ModelAttribute ClassDTO clas, Model model) {
         appendModelWithData(model);
-
         model.addAttribute("days", DayOfWeek.values());
         model.addAttribute("time", ClassTime.values());
         model.addAttribute("groups", groupService.getAll());
         model.addAttribute("courses", courseService.getAll());
-        Optional<Long> idToDelete = classService.getAll().stream().filter(cl -> {
-                    boolean day = cl.getDay().equals(clas.getDay());
-                    boolean time = cl.getTime().equals(clas.getTime());
-                    boolean group = cl.getGroup().getName().equals(clas.getGroupName());
-                    boolean course = cl.getCourse().getName().equals(clas.getCourseName());
-                    return day && time && group && course;
-                })
+        Optional<Long> idToDelete = classService.getAll().stream()
+                .filter(cl -> classPredicate(clas, cl))
                 .findAny()
                 .map(Class::getId);
         if (idToDelete.isPresent()){
@@ -140,5 +136,13 @@ public class AdminController {
         model.addAttribute("teachers", teachers);
         List<Group> groups = groupService.getAll();
         model.addAttribute("groups", groups);
+    }
+
+    private boolean classPredicate(ClassDTO clas, Class cl) {
+        boolean day = cl.getDay().equals(clas.getDay());
+        boolean time = cl.getTime().equals(clas.getTime());
+        boolean group = cl.getGroup().getName().equals(clas.getGroupName());
+        boolean course = cl.getCourse().getName().equals(clas.getCourseName());
+        return day && time && group && course;
     }
 }

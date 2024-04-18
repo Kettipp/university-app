@@ -4,7 +4,7 @@ import org.aspectj.lang.JoinPoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class LoggingAspect {
+public abstract class LoggingAspect {
     final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     public void before(JoinPoint jp) {

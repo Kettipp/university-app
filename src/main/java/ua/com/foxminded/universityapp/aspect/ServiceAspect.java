@@ -10,24 +10,13 @@ import org.springframework.stereotype.Component;
 @Aspect
 @Component
 public class ServiceAspect extends LoggingAspect {
-    @Pointcut("execution(public * ua.com.foxminded.universityapp.service.ClassService.*(..))")
-    public void callClassService() {}
 
-    @Pointcut("execution(public * ua.com.foxminded.universityapp.service.CourseService.*(..))")
-    public void callCourseService() {}
-
-    @Pointcut("execution(public * ua.com.foxminded.universityapp.service.GroupService.*(..))")
-    public void callGroupService() {}
-
-    @Pointcut("execution(public * ua.com.foxminded.universityapp.service.UserService.*(..))")
-    public void callUserService() {}
-
-    @Before("callClassService() || callCourseService() || callGroupService() || callUserService()")
+    @Before("execution(public * ua.com.foxminded.universityapp.service..*(..))")
     public void beforeCallRepository(JoinPoint jp) {
         before(jp);
     }
 
-    @After("callClassService() || callCourseService() || callGroupService() || callUserService()")
+    @After("execution(public * ua.com.foxminded.universityapp.service..*(..))")
     public void afterCallRepository(JoinPoint jp) {
         after(jp);
     }

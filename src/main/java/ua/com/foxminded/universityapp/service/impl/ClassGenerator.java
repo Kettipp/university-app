@@ -26,7 +26,6 @@ public class ClassGenerator implements Generate<Class> {
     }
 
     @Override
-    @Transactional
     public List<Class> generate() {
         List<Class> classes = new ArrayList<>();
         List<Course> courses = courseService.getAll();

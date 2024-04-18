@@ -15,6 +15,7 @@
     <div class="deleteClass">
         <label class="deleteClassLabel"> Delete class</label>
         <form name="delete" th:action="@{/editSchedule/delete}" method="post">
+            
             <select name="day">
                 <option th:each="day : ${days}" th:value="${day}" th:text="${day}"/>
             </select>

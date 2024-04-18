@@ -32,7 +32,7 @@
     <tr th:each="kv : ${schedule.classes}">
         <td class="times" th:name="time" th:text="${kv.key.getTimeSlot()}"></td>
         <td th:each="class: ${kv.value}"
-            th:text="${class.course.name + '/' + class.teacher.firstName + ' ' + class.teacher.lastName + ' ' + class.day + ' ' + class.time + ' ' + class.group.name}">
+            th:text="${class.course.name + '/' + class.teacher.firstName + ' ' + class.teacher.lastName}">
         </td>
     </tr>
     </tbody>

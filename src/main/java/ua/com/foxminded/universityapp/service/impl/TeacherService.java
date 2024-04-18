@@ -2,44 +2,45 @@ package ua.com.foxminded.universityapp.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ua.com.foxminded.universityapp.model.repository.UserRepository;
 import ua.com.foxminded.universityapp.model.entity.Teacher;
 import ua.com.foxminded.universityapp.model.entity.User;
+import ua.com.foxminded.universityapp.model.repository.UserRepository;
 import ua.com.foxminded.universityapp.service.UserService;
 
 import java.util.List;
+
 @Service
-public class UserServiceImpl implements UserService<User> {
+public class TeacherService implements UserService<Teacher> {
     private final UserRepository repository;
 
     @Autowired
-    public UserServiceImpl(UserRepository repository) {
+    public TeacherService(UserRepository repository) {
         this.repository = repository;
     }
 
     @Override
-    public void add(User user) {
-        repository.save(user);
+    public void addAll(List<Teacher> entities) {
+
     }
 
     @Override
-    public void addAll(List<User> entities) {
-        repository.saveAll(entities);
+    public void add(Teacher teacher) {
+        repository.save(teacher);
     }
 
     @Override
-    public List<User> getAll() {
-        return repository.findAll();
+    public List<Teacher> getAll() {
+        return null;
     }
 
     @Override
     public void deleteById(long id) {
-        repository.deleteById(id);
+
     }
 
     @Override
     public List<Teacher> getTeachers() {
-       return repository.findTeachers();
+        return null;
     }
 
     @Override

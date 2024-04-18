@@ -1,4 +1,4 @@
-package ua.com.foxminded.universityapp.model;
+package ua.com.foxminded.universityapp.model.repository;
 
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
