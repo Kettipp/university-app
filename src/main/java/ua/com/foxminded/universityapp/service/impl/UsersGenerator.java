@@ -30,7 +30,7 @@ public class UsersGenerator implements Generate<User> {
     private final CourseServiceImpl courseService;
     private final UserService<Teacher> userService;
     private final PasswordEncoder passwordEncoder;
-    private final Random random = new Random();
+    private final Random random;
 
     @Autowired
     public UsersGenerator(@Value("${university.loginSize}") int loginSize, @Value("${university.passwordSize}") int passwordSize,
@@ -38,7 +38,7 @@ public class UsersGenerator implements Generate<User> {
                           @Value("${university.teachersCount}") int teachersCount, @Value("${university.adminFirstName}") String adminFirstName,
                           @Value("${university.adminLastName}") String adminLastName, UniversityProperties properties,
                           GroupServiceImpl groupService, CourseServiceImpl courseService,
-                          UserService userService, PasswordEncoder passwordEncoder) {
+                          UserService userService, PasswordEncoder passwordEncoder, Random random) {
         this.loginSize = loginSize;
         this.passwordSize = passwordSize;
         this.passwordSymbolLimit = passwordSymbolLimit;
@@ -51,6 +51,7 @@ public class UsersGenerator implements Generate<User> {
         this.courseService = courseService;
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
+        this.random = random;
     }
 
     @Override

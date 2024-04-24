@@ -32,6 +32,11 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
+    public Group getById(long id){
+        return repository.findById(id).orElseThrow();
+    }
+
+    @Override
     public void deleteById(long id) {
         repository.deleteById(id);
     }

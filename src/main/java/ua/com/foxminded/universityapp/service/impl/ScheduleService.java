@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 import ua.com.foxminded.universityapp.model.entity.*;
 import ua.com.foxminded.universityapp.model.entity.Class;
+import ua.com.foxminded.universityapp.service.GroupService;
 
 import java.time.*;
 import java.util.*;
@@ -13,7 +14,9 @@ import java.util.*;
 @Slf4j
 public class ScheduleService {
     private static final int WORK_DAYS_COUNT = 5;
+
     private static final int GROUPS_COUNT = 5;
+
 
     public List<Schedule> generate(List<Class> classes) {
         return scheduleTemplates()
@@ -37,6 +40,7 @@ public class ScheduleService {
             classTime.stream().filter(x -> !classTimesForDay.contains(x)).forEach(time -> classesForDay.add(Class.builder()
                     .course(Course.builder().name("-").build())
                     .group(Group.builder().name("-").build())
+                    .teacher(Teacher.builder().firstName("-").lastName("-").build())
                     .time(time)
                     .build()
             ));
@@ -53,6 +57,7 @@ public class ScheduleService {
                 .map(ent -> Map.entry(ent.getKey(), ent.getValue()
                                 .stream()
                                 .map(clas -> getIfExists(schedule, ent.getKey(), classes).orElse(clas))
+                                .sorted(Comparator.comparing(cl -> cl.getGroup().getId()))
                                 .toList()
                         )
                 )

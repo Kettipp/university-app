@@ -2,15 +2,14 @@ package ua.com.foxminded.universityapp.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ua.com.foxminded.universityapp.model.entity.Group;
 import ua.com.foxminded.universityapp.model.entity.Teacher;
-import ua.com.foxminded.universityapp.model.entity.User;
 import ua.com.foxminded.universityapp.model.repository.UserRepository;
-import ua.com.foxminded.universityapp.service.UserService;
 
 import java.util.List;
 
 @Service
-public class TeacherService implements UserService<Teacher> {
+public class TeacherService  {
     private final UserRepository repository;
 
     @Autowired
@@ -18,33 +17,42 @@ public class TeacherService implements UserService<Teacher> {
         this.repository = repository;
     }
 
-    @Override
-    public void addAll(List<Teacher> entities) {
-
+    public Teacher getById(long id){
+        return (Teacher) repository.findById(id).orElseThrow();
     }
+//
+//    @Autowired
+//    public TeacherService(UserRepository repository) {
+//        this.repository = repository;
+//    }
+//
+//    @Override
+//    public void addAll(List<Teacher> entities) {
+//
+//    }
+//
+//    @Override
+//    public void add(Teacher teacher) {
+//        repository.save(teacher);
+//    }
+//
+//    @Override
+//    public List<Teacher> getAll() {
+//        return null;
+//    }
+//
+//    @Override
+//    public void deleteById(long id) {
+//
+//    }
+//
 
-    @Override
-    public void add(Teacher teacher) {
-        repository.save(teacher);
-    }
-
-    @Override
-    public List<Teacher> getAll() {
-        return null;
-    }
-
-    @Override
-    public void deleteById(long id) {
-
-    }
-
-    @Override
     public List<Teacher> getTeachers() {
-        return null;
+        return repository.findTeachers();
     }
+//
 
-    @Override
-    public User getByTeacherName(String firstName, String lastName) {
+    public Teacher getByTeacherName(String firstName, String lastName) {
         return repository.findByTeacherName(firstName, lastName);
     }
 }

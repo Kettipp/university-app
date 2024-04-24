@@ -83,4 +83,4 @@ university:
   teachersCount: 12
   adminFirstName: admin
   adminLastName: admin
-isDebug: false
+isDebug: true

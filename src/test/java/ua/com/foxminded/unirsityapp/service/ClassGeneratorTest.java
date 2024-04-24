@@ -5,14 +5,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import ua.com.foxminded.universityapp.config.SecurityConfig;
 import ua.com.foxminded.universityapp.config.UniversityProperties;
 import ua.com.foxminded.universityapp.model.repository.CourseRepository;
 import ua.com.foxminded.universityapp.model.repository.GroupRepository;
 import ua.com.foxminded.universityapp.model.entity.*;
 import ua.com.foxminded.universityapp.model.entity.Class;
+import ua.com.foxminded.universityapp.model.repository.UserRepository;
 import ua.com.foxminded.universityapp.service.Generate;
 import ua.com.foxminded.universityapp.service.impl.ClassGenerator;
 import ua.com.foxminded.universityapp.service.impl.CourseServiceImpl;
+import ua.com.foxminded.universityapp.service.impl.CustomUserDetailsService;
 import ua.com.foxminded.universityapp.service.impl.GroupServiceImpl;
 
 import java.time.DayOfWeek;
@@ -22,7 +25,7 @@ import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest(classes = {ClassGenerator.class, GroupServiceImpl.class, CourseServiceImpl.class})
+@SpringBootTest(classes = {ClassGenerator.class, GroupServiceImpl.class, CourseServiceImpl.class, SecurityConfig.class, CustomUserDetailsService.class})
 @EnableConfigurationProperties(value = UniversityProperties.class)
 public class ClassGeneratorTest {
     private static final int CLASSES_COUNT = 20;
@@ -30,13 +33,15 @@ public class ClassGeneratorTest {
     private static GroupRepository groupRepository;
     @MockBean
     private static CourseRepository courseRepository;
+    @MockBean
+    private UserRepository userRepository;
     @Autowired
     private Generate<Class> classGenerate;
     private List<Class> classes;
 
     @Test
     public void generate_shouldGenerateClasses() {
-        List<Teacher> teachers = new ArrayList<>();
+        Set<Teacher> teachers = new HashSet<>();
         teachers.add(Teacher.builder().id(1).firstName("Liam").lastName("Smith").username("aaaa").password("1111").build());
         teachers.add(Teacher.builder().id(2).firstName("Liam").lastName("Smith").username("aaaa").password("1111").build());
         Set<Course> courses = new HashSet<>();
@@ -128,7 +133,7 @@ public class ClassGeneratorTest {
     }
 
     private Course makeCourse(String value, Teacher t) {
-        return Course.builder().name(value).teachers(List.of(t)).build();
+        return Course.builder().name(value).teachers(Set.of(t)).build();
     }
 
     private Teacher makeTeacher(String value) {

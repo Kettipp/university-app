@@ -6,10 +6,10 @@ import java.time.DayOfWeek;
 
 @Data
 public class ClassDTO {
+    private long id;
     private DayOfWeek day;
     private ClassTime time;
-    private String groupName;
-    private String courseName;
-    private String teacherFirstname;
-    private String teacherLastname;
+    private long groupId;
+    private long courseId;
+    private long teacherId;
 }

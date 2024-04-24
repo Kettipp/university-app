@@ -23,10 +23,10 @@ public class Group {
     private String name;
     @OneToMany(mappedBy = "group")
     @Builder.Default
-    private List<Student> students = new ArrayList<>();
+    private Set<Student> students = new HashSet<>();
     @OneToMany(mappedBy = "group")
     @Builder.Default
-    private List<Class> classes = new ArrayList<>();
+    private Set<Class> classes = new HashSet<>();
     @ManyToMany
     @JoinTable(name = "group_courses",
             joinColumns = @JoinColumn(name = "group_id"),

@@ -17,14 +17,16 @@ public class ClassGenerator implements Generate<Class> {
     private static final int ATTEMPT_COUNTER = 5;
     private final GroupService groupService;
     private final CourseService courseService;
-    private final Random random = new Random();
+    private final Random random;
 
     @Autowired
-    public ClassGenerator(GroupService groupService, CourseService courseService) {
+    public ClassGenerator(GroupService groupService, CourseService courseService, Random random) {
         this.groupService = groupService;
         this.courseService = courseService;
+        this.random = random;
     }
 
+    @Transactional
     @Override
     public List<Class> generate() {
         List<Class> classes = new ArrayList<>();
@@ -56,7 +58,7 @@ public class ClassGenerator implements Generate<Class> {
 
     private Optional<Class> generateRandomClass(List<Course> availableCourses, List<Class> classes, DayOfWeek day, ClassTime time, Group group) {
         Course course = availableCourses.remove(random.nextInt(availableCourses.size()));
-        List<Teacher> teachers = course.getTeachers();
+        Set<Teacher> teachers = course.getTeachers();
         Optional<Teacher> first = teachers
                 .stream()
                 .filter(t -> classes.stream()

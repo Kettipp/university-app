@@ -21,7 +21,7 @@ public class ScheduleServiceTest {
 
     @Test
     public void generate_shouldGenerateSchedules() {
-        List<Teacher> teachers = new ArrayList<>();
+        Set<Teacher> teachers = new HashSet<>();
         teachers.add(Teacher.builder().id(1).firstName("Liam").lastName("Smith").username("aaaa").password("1111").build());
         teachers.add(Teacher.builder().id(2).firstName("Liam").lastName("Smith").username("aaaa").password("1111").build());
         Set<Course> courses = new HashSet<>();
@@ -47,7 +47,7 @@ public class ScheduleServiceTest {
                     .time(ClassTime.FIRST)
                     .group(groups.get(i))
                     .course(course)
-                    .teacher(course.getTeachers().get(0))
+                    .teacher(course.getTeachers().stream().findFirst().get())
                     .build());
         }
 

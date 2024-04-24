@@ -12,6 +12,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import ua.com.foxminded.universityapp.service.impl.CustomUserDetailsService;
 
+import java.util.Random;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -43,5 +45,10 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public Random random() {
+        return new Random();
     }
 }

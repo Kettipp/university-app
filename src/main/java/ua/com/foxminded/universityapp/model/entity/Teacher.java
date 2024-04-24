@@ -24,7 +24,7 @@ public class Teacher extends User {
     private Set<Course> courses = new HashSet<>();
     @Builder.Default
     @OneToMany(mappedBy = "teacher")
-    private List<Class> clas = new ArrayList<>();
+    private Set<Class> clas = new HashSet<>();
 
     @Override
     public String toString() {

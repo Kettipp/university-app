@@ -2,6 +2,7 @@ package ua.com.foxminded.universityapp.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ua.com.foxminded.universityapp.model.entity.Group;
 import ua.com.foxminded.universityapp.model.repository.CourseRepository;
 import ua.com.foxminded.universityapp.model.entity.Course;
 import ua.com.foxminded.universityapp.service.CourseService;
@@ -29,6 +30,10 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public List<Course> getAll() {
         return repository.findAll();
+    }
+    @Override
+    public Course getById(long id){
+        return repository.findById(id).orElseThrow();
     }
 
     @Override

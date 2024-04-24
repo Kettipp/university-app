@@ -11,7 +11,7 @@ import java.time.DayOfWeek;
 import static jakarta.persistence.EnumType.STRING;
 
 @Data
-@Builder
+@Builder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity

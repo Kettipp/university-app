@@ -31,8 +31,10 @@
     </tr>
     <tr th:each="kv : ${schedule.classes}">
         <td class="times" th:name="time" th:text="${kv.key.getTimeSlot()}"></td>
-        <td th:each="class: ${kv.value}"
-            th:text="${class.course.name + '/' + class.teacher.firstName + ' ' + class.teacher.lastName}">
+        <td th:each="class: ${kv.value}">
+            <a th:href="@{'/editSchedule/' + ${class.id}}"
+               th:text="${class.course.name + '/' + class.teacher.firstName + ' ' + class.teacher.lastName}">
+            </a>
         </td>
     </tr>
     </tbody>

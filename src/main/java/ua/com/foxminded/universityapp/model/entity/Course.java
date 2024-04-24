@@ -7,7 +7,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Builder
@@ -23,13 +25,13 @@ public class Course {
     private String name;
     @OneToMany(mappedBy = "course")
     @Builder.Default
-    private List<Class> classes = new ArrayList<>();
+    private Set<Class> classes = new HashSet<>();
     @ManyToMany(mappedBy = "courses")
     @Builder.Default
-    private List<Group> groups = new ArrayList<>();
+    private Set<Group> groups = new HashSet<>();
     @ManyToMany(mappedBy = "courses")
     @Builder.Default
-    private List<Teacher> teachers = new ArrayList<>();
+    private Set<Teacher> teachers = new HashSet<>();
 
     @Override
     public String toString() {

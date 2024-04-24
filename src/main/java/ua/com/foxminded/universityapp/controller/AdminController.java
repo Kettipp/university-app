@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ua.com.foxminded.universityapp.model.entity.*;
 import ua.com.foxminded.universityapp.model.entity.Class;
 import ua.com.foxminded.universityapp.service.ClassService;
@@ -13,8 +14,10 @@ import ua.com.foxminded.universityapp.service.GroupService;
 import ua.com.foxminded.universityapp.service.UserService;
 
 import java.time.DayOfWeek;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Controller
 @Slf4j
@@ -22,6 +25,8 @@ public class AdminController {
     private static final String ADMIN = "Admin";
     private static final String STUDENT = "Student";
     private static final String TEACHER = "Teacher";
+    private static final String SUCCESS_MESSAGE = "Success";
+    private static final String ERROR_MESSAGE = "Group or Teacher already have class at this time";
     private final UserService<User> userService;
     private final GroupService groupService;
     private final ClassService classService;
@@ -53,6 +58,7 @@ public class AdminController {
     public String createCourse(Model model, @RequestParam String courseName) {
         appendModelWithData(model);
         courseService.add(Course.builder().name(courseName).build());
+        model.addAttribute("message", SUCCESS_MESSAGE);
         return "createNewCourse";
     }
 
@@ -79,70 +85,95 @@ public class AdminController {
                 .username(user.getUsername())
                 .password(user.getPassword())
                 .build());
+        model.addAttribute("message", SUCCESS_MESSAGE);
         return "createNewUser";
     }
 
-    @GetMapping("/editSchedule")
-    public String editSchedule(Model model) {
+    @GetMapping("/editSchedule/{id}")
+    public String editSchedule(Model model, @PathVariable long id) {
         appendModelWithData(model);
-
-        model.addAttribute("days", DayOfWeek.values());
-        model.addAttribute("time", ClassTime.values());
-        model.addAttribute("groups", groupService.getAll());
-        model.addAttribute("courses", courseService.getAll());
-        model.addAttribute("teachers", userService.getTeachers());
+        Class clas = classService.getById(id);
+        model.addAttribute("clas", clas);
         return "editSchedule";
     }
 
-    @Transactional
     @PostMapping("/editSchedule/delete")
-    public String deleteClass(@ModelAttribute ClassDTO clas, Model model) {
+    public String deleteClass(@ModelAttribute Class clas, Model model) {
         appendModelWithData(model);
-        model.addAttribute("days", DayOfWeek.values());
-        model.addAttribute("time", ClassTime.values());
-        model.addAttribute("groups", groupService.getAll());
-        model.addAttribute("courses", courseService.getAll());
-        Optional<Long> idToDelete = classService.getAll().stream()
-                .filter(cl -> classPredicate(clas, cl))
-                .findAny()
-                .map(Class::getId);
-        if (idToDelete.isPresent()){
-            classService.deleteById(idToDelete.get());
-        } else {
-            log.warn("Nothing found for deleting, dto: {}", clas);
+        classService.deleteById(clas.getId());
+        model.addAttribute("message", SUCCESS_MESSAGE);
+        return "redirect:/schedule/all";
+    }
+
+    @PostMapping("/editSchedule/change")
+    public String changeClass(@ModelAttribute ClassDTO clas, Model model, RedirectAttributes redirectAttributes) {
+        Class byId = classService.getById(clas.getId());
+        appendModelWithData(model);
+
+        Group group = groupService.getById(clas.getGroupId());
+        Set<Class> groupClasses = group.getClasses();
+        List<Class> neededClass = new ArrayList<>();
+        for (Class c : groupClasses) {
+            if (c.getDay().equals(clas.getDay()) && c.getTime().equals(clas.getTime())) {
+                neededClass.add(c);
+            }
         }
-        return "editSchedule";
+        if (!neededClass.isEmpty()) {
+            redirectAttributes.addFlashAttribute("message", ERROR_MESSAGE);
+            return "redirect:/editSchedule/" + clas.getId();
+        } else {
+            byId.setDay(clas.getDay());
+            byId.setTime(clas.getTime());
+            byId.setGroup(groupService.getById(clas.getGroupId()));
+            byId.setCourse(courseService.getById(clas.getCourseId()));
+            byId.setTeacher((Teacher) userService.getById(clas.getTeacherId()));
+            classService.add(byId);
+            redirectAttributes.addFlashAttribute("message", SUCCESS_MESSAGE);
+        }
+        return "redirect:/schedule/all";
     }
 
-    @PostMapping("/editSchedule/add")
+    @GetMapping("/addClass")
+    public String addClas(Model model) {
+        appendModelWithData(model);
+        return "addClass";
+    }
+
+    @PostMapping("/addClass")
     public String addClass(@ModelAttribute ClassDTO clas, Model model) {
-        model.addAttribute("days", DayOfWeek.values());
-        model.addAttribute("time", ClassTime.values());
-        model.addAttribute("groups", groupService.getAll());
-        model.addAttribute("courses", courseService.getAll());
-        model.addAttribute("teachers", userService.getTeachers());
-
-        classService.add(Class.builder()
-                .day(clas.getDay())
-                .time(clas.getTime())
-                .group(groupService.getByName(clas.getGroupName()))
-                .course(courseService.getByName(clas.getCourseName()))
-                .teacher((Teacher) userService.getByTeacherName(clas.getTeacherFirstname(), clas.getTeacherLastname()))
-                .build());
-        return "editSchedule";
+        appendModelWithData(model);
+        Group group = groupService.getById(clas.getGroupId());
+        Set<Class> groupClasses = group.getClasses();
+        List<Class> neededClass = new ArrayList<>();
+        for (Class c : groupClasses) {
+            if (c.getDay().equals(clas.getDay()) && c.getTime().equals(clas.getTime())) {
+                neededClass.add(c);
+            }
+        }
+        if(neededClass.isEmpty()) {
+            classService.add(Class.builder()
+                    .day(clas.getDay())
+                    .time(clas.getTime())
+                    .group(groupService.getById(clas.getGroupId()))
+                    .course(courseService.getById(clas.getCourseId()))
+                    .teacher((Teacher) userService.getById(clas.getTeacherId()))
+                    .build());
+            model.addAttribute("message", SUCCESS_MESSAGE);
+        } else {
+            model.addAttribute("message", ERROR_MESSAGE);
+        }
+        return "addClass";
     }
+
     private void appendModelWithData(Model model) {
         List<Teacher> teachers = userService.getTeachers();
         model.addAttribute("teachers", teachers);
         List<Group> groups = groupService.getAll();
         model.addAttribute("groups", groups);
-    }
-
-    private boolean classPredicate(ClassDTO clas, Class cl) {
-        boolean day = cl.getDay().equals(clas.getDay());
-        boolean time = cl.getTime().equals(clas.getTime());
-        boolean group = cl.getGroup().getName().equals(clas.getGroupName());
-        boolean course = cl.getCourse().getName().equals(clas.getCourseName());
-        return day && time && group && course;
+        model.addAttribute("days", DayOfWeek.values());
+        model.addAttribute("time", ClassTime.values());
+        model.addAttribute("groups", groupService.getAll());
+        model.addAttribute("courses", courseService.getAll());
+        model.addAttribute("teachers", userService.getTeachers());
     }
 }

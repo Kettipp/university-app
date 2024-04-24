@@ -14,8 +14,7 @@ import java.util.List;
 
 @Repository
 public interface ClassRepository extends JpaRepository<Class, Long> {
-    @Query("SELECT c FROM Class c WHERE c.group.name = :name")
-    List<Class> findClassByGroupName(@Param("name") String groupName);
+    List<Class> findClassByGroupName(String groupName);
 
     @Query("SELECT c FROM Class c WHERE c.teacher.firstName = :teacherFirstName and c.teacher.lastName = :teacherLastName")
     List<Class> findClassByTeacherName(@Param("teacherFirstName") String teacherFirstName, @Param("teacherLastName")String teacherLastName);
