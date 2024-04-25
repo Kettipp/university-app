@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import ua.com.foxminded.universityapp.config.SecurityConfig;
+import ua.com.foxminded.universityapp.config.Config;
 import ua.com.foxminded.universityapp.config.UniversityProperties;
 import ua.com.foxminded.universityapp.model.repository.CourseRepository;
 import ua.com.foxminded.universityapp.model.repository.GroupRepository;
@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest(classes = {ClassGenerator.class, GroupServiceImpl.class, CourseServiceImpl.class, SecurityConfig.class, CustomUserDetailsService.class})
+@SpringBootTest(classes = {ClassGenerator.class, GroupServiceImpl.class, CourseServiceImpl.class, Config.class, CustomUserDetailsService.class})
 @EnableConfigurationProperties(value = UniversityProperties.class)
 public class ClassGeneratorTest {
     private static final int CLASSES_COUNT = 20;

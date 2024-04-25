@@ -1,10 +1,7 @@
 package ua.com.foxminded.universityapp.model.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -25,12 +22,15 @@ public class Course {
     private String name;
     @OneToMany(mappedBy = "course")
     @Builder.Default
+    @EqualsAndHashCode.Exclude
     private Set<Class> classes = new HashSet<>();
     @ManyToMany(mappedBy = "courses")
     @Builder.Default
+    @EqualsAndHashCode.Exclude
     private Set<Group> groups = new HashSet<>();
     @ManyToMany(mappedBy = "courses")
     @Builder.Default
+    @EqualsAndHashCode.Exclude
     private Set<Teacher> teachers = new HashSet<>();
 
     @Override

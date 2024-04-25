@@ -20,37 +20,10 @@ public class TeacherService  {
     public Teacher getById(long id){
         return (Teacher) repository.findById(id).orElseThrow();
     }
-//
-//    @Autowired
-//    public TeacherService(UserRepository repository) {
-//        this.repository = repository;
-//    }
-//
-//    @Override
-//    public void addAll(List<Teacher> entities) {
-//
-//    }
-//
-//    @Override
-//    public void add(Teacher teacher) {
-//        repository.save(teacher);
-//    }
-//
-//    @Override
-//    public List<Teacher> getAll() {
-//        return null;
-//    }
-//
-//    @Override
-//    public void deleteById(long id) {
-//
-//    }
-//
 
     public List<Teacher> getTeachers() {
         return repository.findTeachers();
     }
-//
 
     public Teacher getByTeacherName(String firstName, String lastName) {
         return repository.findByTeacherName(firstName, lastName);

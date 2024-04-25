@@ -21,9 +21,11 @@ public class Teacher extends User {
             inverseJoinColumns = @JoinColumn(name = "course_id")
     )
     @Builder.Default
+    @EqualsAndHashCode.Exclude
     private Set<Course> courses = new HashSet<>();
     @Builder.Default
     @OneToMany(mappedBy = "teacher")
+    @EqualsAndHashCode.Exclude
     private Set<Class> clas = new HashSet<>();
 
     @Override

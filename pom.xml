@@ -124,9 +124,7 @@
         <!-- https://mvnrepository.com/artifact/org.thymeleaf.extras/thymeleaf-extras-springsecurity5 -->
         <dependency>
             <groupId>org.thymeleaf.extras</groupId>
-            <artifactId>thymeleaf-extras-springsecurity5</artifactId>
-            <version>3.1.2.RELEASE</version>
+            <artifactId>thymeleaf-extras-springsecurity6</artifactId>
         </dependency>
-
     </dependencies>
 </project>

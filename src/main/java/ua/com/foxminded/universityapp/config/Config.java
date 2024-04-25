@@ -1,5 +1,6 @@
 package ua.com.foxminded.universityapp.config;
 
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,18 +11,22 @@ import org.springframework.security.config.annotation.web.configurers.LogoutConf
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import ua.com.foxminded.universityapp.service.impl.CustomUserDetailsService;
 
 import java.util.Random;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig {
+@EnableWebMvc
+public class Config implements WebMvcConfigurer {
 
     private final CustomUserDetailsService customUserDetailsService;
 
     @Autowired
-    public SecurityConfig(CustomUserDetailsService customUserDetailsService) {
+    public Config(CustomUserDetailsService customUserDetailsService) {
         this.customUserDetailsService = customUserDetailsService;
     }
 
@@ -29,11 +34,12 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(Customizer.withDefaults())
                 .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/login", "/error").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(login -> login
                         .loginPage("/login")
-                        .failureUrl("/login?error").permitAll()
+                        .failureUrl("/login?error")
                         .defaultSuccessUrl("/schedule/all", true)
                 )
                 .logout(LogoutConfigurer::permitAll)
@@ -50,5 +56,11 @@ public class SecurityConfig {
     @Bean
     public Random random() {
         return new Random();
+    }
+
+    @Override
+    public void addViewControllers(@NotNull ViewControllerRegistry registry) {
+        registry.addViewController("/login").setViewName("login");
+        WebMvcConfigurer.super.addViewControllers(registry);
     }
 }

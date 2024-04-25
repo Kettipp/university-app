@@ -6,7 +6,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
-import ua.com.foxminded.universityapp.config.SecurityConfig;
+import ua.com.foxminded.universityapp.config.Config;
 import ua.com.foxminded.universityapp.config.UniversityProperties;
 import ua.com.foxminded.universityapp.model.repository.CourseRepository;
 import ua.com.foxminded.universityapp.model.repository.GroupRepository;
@@ -25,7 +25,7 @@ import static org.mockito.Mockito.when;
 
 @SpringBootTest(classes = {
         UsersGenerator.class, GroupServiceImpl.class, CourseServiceImpl.class,
-        UserServiceImpl.class, SecurityConfig.class, CustomUserDetailsService.class
+        UserServiceImpl.class, Config.class, CustomUserDetailsService.class
 })
 @EnableConfigurationProperties(value = UniversityProperties.class)
 @ActiveProfiles("test")
