@@ -13,6 +13,7 @@ import ua.com.foxminded.universityapp.service.ClassService;
 import ua.com.foxminded.universityapp.service.GroupService;
 import ua.com.foxminded.universityapp.service.UserService;
 import ua.com.foxminded.universityapp.service.impl.ScheduleService;
+import ua.com.foxminded.universityapp.service.impl.TeacherService;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -21,15 +22,15 @@ import java.util.*;
 @RequestMapping("/schedule")
 @Slf4j
 public class ScheduleController {
-    private final UserService<User> userService;
+    private final TeacherService teacherService;
     private final GroupService groupService;
     private final ClassService classService;
     private final ScheduleService scheduleService;
 
     @Autowired
-    public ScheduleController(UserService<User> userService, ClassService classService,
+    public ScheduleController( TeacherService teacherService, ClassService classService,
                               GroupService groupService, ScheduleService scheduleService) {
-        this.userService = userService;
+        this.teacherService = teacherService;
         this.classService = classService;
         this.groupService = groupService;
         this.scheduleService = scheduleService;
@@ -69,7 +70,7 @@ public class ScheduleController {
     }
 
     private void appendModelWithData(Model model) {
-        List<Teacher> teachers = userService.getTeachers();
+        List<Teacher> teachers = teacherService.getTeachers();
         model.addAttribute("teachers", teachers);
         List<Group> groups = groupService.getAll();
         model.addAttribute("groups", groups);

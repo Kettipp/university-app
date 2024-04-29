@@ -9,12 +9,12 @@
 </head>
 <body>
 <header>
-    <div class="edit" sec:authorize="hasRole('Admin')">
+    <div class="edit" sec:authorize="hasAuthority('Admin')">
         <a th:href="@{/createNewUser}">Create user</a>
         <a th:href="@{/createNewCourse}">Create course</a>
         <a th:href="@{/addClass}">Add class</a>
-        <a th:href="@{/schedule/all}">Main schedule</a>
     </div>
+    <a th:href="@{/schedule/all}">Main schedule</a>
     <div class="groupsChoice">
         <label for="groups">Group:</label>
         <form name="selectGroups" action="/schedule/group" method="get">

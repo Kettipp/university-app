@@ -1,6 +1,5 @@
 package ua.com.foxminded.universityapp.config;
 
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,17 +10,13 @@ import org.springframework.security.config.annotation.web.configurers.LogoutConf
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import ua.com.foxminded.universityapp.service.impl.CustomUserDetailsService;
 
 import java.util.Random;
 
 @Configuration
 @EnableWebSecurity
-@EnableWebMvc
-public class Config implements WebMvcConfigurer {
+public class Config {
 
     private final CustomUserDetailsService customUserDetailsService;
 
@@ -34,7 +29,7 @@ public class Config implements WebMvcConfigurer {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(Customizer.withDefaults())
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/login", "/error").permitAll()
+                        .requestMatchers("/login", "/error", "/css/**", "/js/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(login -> login
@@ -58,9 +53,4 @@ public class Config implements WebMvcConfigurer {
         return new Random();
     }
 
-    @Override
-    public void addViewControllers(@NotNull ViewControllerRegistry registry) {
-        registry.addViewController("/login").setViewName("login");
-        WebMvcConfigurer.super.addViewControllers(registry);
-    }
 }

@@ -1,5 +1,6 @@
 package ua.com.foxminded.universityapp.service.impl;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,6 +13,7 @@ import ua.com.foxminded.universityapp.model.entity.User;
 import java.util.Collections;
 
 @Service
+@Slf4j
 public class CustomUserDetailsService implements UserDetailsService {
     private final UserRepository repository;
 
@@ -25,11 +27,15 @@ public class CustomUserDetailsService implements UserDetailsService {
         User user = repository.findByUsername(username);
         if(user == null) {
             throw new UsernameNotFoundException("User not found" + username);
+        } else {
+            log.info("GET User for auth process: {}", user);
         }
-        return new org.springframework.security.core.userdetails.User(
+        org.springframework.security.core.userdetails.User springUser = new org.springframework.security.core.userdetails.User(
                 user.getUsername(),
                 user.getPassword(),
                 Collections.singletonList(new SimpleGrantedAuthority(user.getRole()))
         );
+        log.info("Created security user entity: {}", springUser);
+        return springUser;
     }
 }

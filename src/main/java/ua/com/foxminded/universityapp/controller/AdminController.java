@@ -2,7 +2,6 @@ package ua.com.foxminded.universityapp.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -12,11 +11,11 @@ import ua.com.foxminded.universityapp.service.ClassService;
 import ua.com.foxminded.universityapp.service.CourseService;
 import ua.com.foxminded.universityapp.service.GroupService;
 import ua.com.foxminded.universityapp.service.UserService;
+import ua.com.foxminded.universityapp.service.impl.TeacherService;
 
 import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 @Controller
@@ -28,24 +27,18 @@ public class AdminController {
     private static final String SUCCESS_MESSAGE = "Success";
     private static final String ERROR_MESSAGE = "Group or Teacher already have class at this time";
     private final UserService<User> userService;
+    private final TeacherService teacherService;
     private final GroupService groupService;
     private final ClassService classService;
     private final CourseService courseService;
 
-    public AdminController(UserService<User> userService, GroupService groupService,
+    public AdminController(UserService<User> userService, TeacherService teacherService, GroupService groupService,
                            ClassService classService, CourseService courseService) {
         this.userService = userService;
+        this.teacherService = teacherService;
         this.groupService = groupService;
         this.classService = classService;
         this.courseService = courseService;
-    }
-
-    @GetMapping("/admin")
-    public String adminPage(Model model) {
-        List<User> users = userService.getAll();
-        List<String> usersRole = users.stream().map(User::getRole).toList();
-        model.addAttribute("role", usersRole);
-        return "redirect:/schedule/all";
     }
 
     @GetMapping("/createNewCourse")
@@ -126,7 +119,7 @@ public class AdminController {
             byId.setTime(clas.getTime());
             byId.setGroup(groupService.getById(clas.getGroupId()));
             byId.setCourse(courseService.getById(clas.getCourseId()));
-            byId.setTeacher((Teacher) userService.getById(clas.getTeacherId()));
+            byId.setTeacher(teacherService.getById(clas.getTeacherId()));
             classService.add(byId);
             redirectAttributes.addFlashAttribute("message", SUCCESS_MESSAGE);
         }
@@ -156,7 +149,7 @@ public class AdminController {
                     .time(clas.getTime())
                     .group(groupService.getById(clas.getGroupId()))
                     .course(courseService.getById(clas.getCourseId()))
-                    .teacher((Teacher) userService.getById(clas.getTeacherId()))
+                    .teacher(teacherService.getById(clas.getTeacherId()))
                     .build());
             model.addAttribute("message", SUCCESS_MESSAGE);
         } else {

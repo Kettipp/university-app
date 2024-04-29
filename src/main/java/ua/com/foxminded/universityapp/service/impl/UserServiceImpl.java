@@ -46,9 +46,4 @@ public class UserServiceImpl implements UserService<User> {
     public List<Teacher> getTeachers() {
        return repository.findTeachers();
     }
-
-    @Override
-    public User getByTeacherName(String firstName, String lastName) {
-        return repository.findByTeacherName(firstName, lastName);
-    }
 }
