@@ -1,14 +1,10 @@
 package ua.com.foxminded.universityapp.model.repository;
 
-import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import ua.com.foxminded.universityapp.model.entity.Class;
-import ua.com.foxminded.universityapp.model.entity.Course;
-import ua.com.foxminded.universityapp.model.entity.Teacher;
 
 import java.util.List;
 

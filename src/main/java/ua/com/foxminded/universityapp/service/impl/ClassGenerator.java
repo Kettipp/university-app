@@ -2,7 +2,6 @@ package ua.com.foxminded.universityapp.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 import ua.com.foxminded.universityapp.model.entity.*;
 import ua.com.foxminded.universityapp.model.entity.Class;
 import ua.com.foxminded.universityapp.service.CourseService;
@@ -26,7 +25,6 @@ public class ClassGenerator implements Generate<Class> {
         this.random = random;
     }
 
-    @Transactional
     @Override
     public List<Class> generate() {
         List<Class> classes = new ArrayList<>();

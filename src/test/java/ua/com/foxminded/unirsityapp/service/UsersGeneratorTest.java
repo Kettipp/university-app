@@ -5,8 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
-import ua.com.foxminded.universityapp.config.Config;
 import ua.com.foxminded.universityapp.config.UniversityProperties;
 import ua.com.foxminded.universityapp.model.repository.CourseRepository;
 import ua.com.foxminded.universityapp.model.repository.GroupRepository;
@@ -15,21 +15,19 @@ import ua.com.foxminded.universityapp.model.entity.*;
 import ua.com.foxminded.universityapp.service.Generate;
 import ua.com.foxminded.universityapp.service.impl.*;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest(classes = {
-        UsersGenerator.class, GroupServiceImpl.class, CourseServiceImpl.class,
-        UserServiceImpl.class, Config.class, CustomUserDetailsService.class
-})
+@SpringBootTest(classes = {UsersGenerator.class, GroupServiceImpl.class, CourseServiceImpl.class, UserServiceImpl.class})
 @EnableConfigurationProperties(value = UniversityProperties.class)
 @ActiveProfiles("test")
 public class UsersGeneratorTest {
+    @MockBean
+    private Random random;
+    @MockBean
+    private PasswordEncoder passwordEncoder;
 
     @MockBean
     private GroupRepository groupRepository;
@@ -37,6 +35,7 @@ public class UsersGeneratorTest {
     private CourseRepository courseRepository;
     @MockBean
     private UserRepository userRepository;
+
 
     @Autowired
     private Generate<User> usersGenerator;

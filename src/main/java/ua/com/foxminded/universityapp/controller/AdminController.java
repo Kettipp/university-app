@@ -115,12 +115,13 @@ public class AdminController {
             redirectAttributes.addFlashAttribute("message", ERROR_MESSAGE);
             return "redirect:/editSchedule/" + clas.getId();
         } else {
-            byId.setDay(clas.getDay());
-            byId.setTime(clas.getTime());
-            byId.setGroup(groupService.getById(clas.getGroupId()));
-            byId.setCourse(courseService.getById(clas.getCourseId()));
-            byId.setTeacher(teacherService.getById(clas.getTeacherId()));
-            classService.add(byId);
+            classService.changeClass(
+                    byId,
+                    clas.getDay(),
+                    clas.getTime(),
+                    groupService.getById(clas.getGroupId()),
+                    courseService.getById(clas.getCourseId()),
+                    teacherService.getById(clas.getTeacherId()));
             redirectAttributes.addFlashAttribute("message", SUCCESS_MESSAGE);
         }
         return "redirect:/schedule/all";
@@ -135,15 +136,7 @@ public class AdminController {
     @PostMapping("/addClass")
     public String addClass(@ModelAttribute ClassDTO clas, Model model) {
         appendModelWithData(model);
-        Group group = groupService.getById(clas.getGroupId());
-        Set<Class> groupClasses = group.getClasses();
-        List<Class> neededClass = new ArrayList<>();
-        for (Class c : groupClasses) {
-            if (c.getDay().equals(clas.getDay()) && c.getTime().equals(clas.getTime())) {
-                neededClass.add(c);
-            }
-        }
-        if(neededClass.isEmpty()) {
+        try {
             classService.add(Class.builder()
                     .day(clas.getDay())
                     .time(clas.getTime())
@@ -152,7 +145,7 @@ public class AdminController {
                     .teacher(teacherService.getById(clas.getTeacherId()))
                     .build());
             model.addAttribute("message", SUCCESS_MESSAGE);
-        } else {
+        } catch (Exception e){
             model.addAttribute("message", ERROR_MESSAGE);
         }
         return "addClass";
