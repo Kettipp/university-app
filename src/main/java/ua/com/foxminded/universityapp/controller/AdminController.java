@@ -14,9 +14,7 @@ import ua.com.foxminded.universityapp.service.UserService;
 import ua.com.foxminded.universityapp.service.impl.TeacherService;
 
 import java.time.DayOfWeek;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Controller
 @Slf4j
@@ -100,29 +98,13 @@ public class AdminController {
 
     @PostMapping("/editSchedule/change")
     public String changeClass(@ModelAttribute ClassDTO clas, Model model, RedirectAttributes redirectAttributes) {
-        Class byId = classService.getById(clas.getId());
         appendModelWithData(model);
-
-        Group group = groupService.getById(clas.getGroupId());
-        Set<Class> groupClasses = group.getClasses();
-        List<Class> neededClass = new ArrayList<>();
-        for (Class c : groupClasses) {
-            if (c.getDay().equals(clas.getDay()) && c.getTime().equals(clas.getTime())) {
-                neededClass.add(c);
-            }
-        }
-        if (!neededClass.isEmpty()) {
+        try {
+            classService.changeClass(clas);
+            redirectAttributes.addFlashAttribute("message", SUCCESS_MESSAGE);
+        } catch (Exception e) {
             redirectAttributes.addFlashAttribute("message", ERROR_MESSAGE);
             return "redirect:/editSchedule/" + clas.getId();
-        } else {
-            classService.changeClass(
-                    byId,
-                    clas.getDay(),
-                    clas.getTime(),
-                    groupService.getById(clas.getGroupId()),
-                    courseService.getById(clas.getCourseId()),
-                    teacherService.getById(clas.getTeacherId()));
-            redirectAttributes.addFlashAttribute("message", SUCCESS_MESSAGE);
         }
         return "redirect:/schedule/all";
     }

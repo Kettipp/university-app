@@ -11,7 +11,6 @@ import ua.com.foxminded.universityapp.service.ClassService;
 import ua.com.foxminded.universityapp.service.CourseService;
 import ua.com.foxminded.universityapp.service.GroupService;
 
-import java.time.DayOfWeek;
 import java.util.List;
 
 @Service
@@ -68,13 +67,13 @@ public class ClassServiceImpl implements ClassService {
     }
 
     @Transactional
-    public void changeClass(Class clas, DayOfWeek day, ClassTime time,
-                            Group group, Course course, Teacher teacher) {
-        clas.setDay(day);
-        clas.setTime(time);
-        clas.setGroup(group);
-        clas.setCourse(course);
-        clas.setTeacher(teacher);
+    public void changeClass(ClassDTO classDTO) {
+        Class clas = getById(classDTO.getId());
+        clas.setDay(classDTO.getDay());
+        clas.setTime(classDTO.getTime());
+        clas.setGroup(groupService.getById(classDTO.getGroupId()));
+        clas.setCourse(courseService.getById(classDTO.getCourseId()));
+        clas.setTeacher(teacherService.getById(classDTO.getTeacherId()));
         add(clas);
     }
 }
