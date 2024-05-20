@@ -2,8 +2,7 @@ package ua.com.foxminded.universityapp.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ua.com.foxminded.universityapp.model.entity.Group;
-import ua.com.foxminded.universityapp.model.repository.CourseRepository;
+import ua.com.foxminded.universityapp.repository.CourseRepository;
 import ua.com.foxminded.universityapp.model.entity.Course;
 import ua.com.foxminded.universityapp.service.CourseService;
 

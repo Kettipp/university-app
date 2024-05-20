@@ -1,4 +1,4 @@
-package ua.com.foxminded.universityapp.model.repository;
+package ua.com.foxminded.universityapp.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

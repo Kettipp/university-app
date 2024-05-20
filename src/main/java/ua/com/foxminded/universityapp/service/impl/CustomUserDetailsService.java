@@ -7,7 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import ua.com.foxminded.universityapp.model.repository.UserRepository;
+import ua.com.foxminded.universityapp.repository.UserRepository;
 import ua.com.foxminded.universityapp.model.entity.User;
 
 import java.util.Collections;

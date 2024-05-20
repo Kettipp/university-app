@@ -14,7 +14,6 @@ import ua.com.foxminded.universityapp.service.UserService;
 import ua.com.foxminded.universityapp.service.impl.TeacherService;
 
 import java.time.DayOfWeek;
-import java.util.List;
 
 @Controller
 @Slf4j
@@ -83,13 +82,13 @@ public class AdminController {
     @GetMapping("/editSchedule/{id}")
     public String editSchedule(Model model, @PathVariable long id) {
         appendModelWithData(model);
-        Class clas = classService.getById(id);
+        ua.com.foxminded.universityapp.model.entity.Class clas = classService.getById(id);
         model.addAttribute("clas", clas);
         return "editSchedule";
     }
 
     @PostMapping("/editSchedule/delete")
-    public String deleteClass(@ModelAttribute Class clas, Model model) {
+    public String deleteClass(@ModelAttribute ua.com.foxminded.universityapp.model.entity.Class clas, Model model) {
         appendModelWithData(model);
         classService.deleteById(clas.getId());
         model.addAttribute("message", SUCCESS_MESSAGE);
@@ -134,10 +133,6 @@ public class AdminController {
     }
 
     private void appendModelWithData(Model model) {
-        List<Teacher> teachers = userService.getTeachers();
-        model.addAttribute("teachers", teachers);
-        List<Group> groups = groupService.getAll();
-        model.addAttribute("groups", groups);
         model.addAttribute("days", DayOfWeek.values());
         model.addAttribute("time", ClassTime.values());
         model.addAttribute("groups", groupService.getAll());

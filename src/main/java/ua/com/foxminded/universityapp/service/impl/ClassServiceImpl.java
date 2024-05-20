@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ua.com.foxminded.universityapp.model.entity.*;
 import ua.com.foxminded.universityapp.model.entity.Class;
-import ua.com.foxminded.universityapp.model.repository.ClassRepository;
+import ua.com.foxminded.universityapp.repository.ClassRepository;
 import ua.com.foxminded.universityapp.service.ClassService;
 import ua.com.foxminded.universityapp.service.CourseService;
 import ua.com.foxminded.universityapp.service.GroupService;
@@ -52,7 +52,6 @@ public class ClassServiceImpl implements ClassService {
 
     @Override
     public void deleteById(long id) {
-        log.info("Delete class with id: {}", id);
         repository.deleteById(id);
     }
 

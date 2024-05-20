@@ -6,11 +6,11 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import ua.com.foxminded.universityapp.config.UniversityProperties;
-import ua.com.foxminded.universityapp.model.repository.CourseRepository;
-import ua.com.foxminded.universityapp.model.repository.GroupRepository;
+import ua.com.foxminded.universityapp.repository.CourseRepository;
+import ua.com.foxminded.universityapp.repository.GroupRepository;
 import ua.com.foxminded.universityapp.model.entity.*;
 import ua.com.foxminded.universityapp.model.entity.Class;
-import ua.com.foxminded.universityapp.model.repository.UserRepository;
+import ua.com.foxminded.universityapp.repository.UserRepository;
 import ua.com.foxminded.universityapp.service.Generate;
 import ua.com.foxminded.universityapp.service.impl.ClassGenerator;
 import ua.com.foxminded.universityapp.service.impl.CourseServiceImpl;
