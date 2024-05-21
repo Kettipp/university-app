@@ -165,11 +165,10 @@ public class UsersGenerator implements Generate<User> {
     }
 
     private String passwordGenerate() {
-//        StringJoiner password = new StringJoiner("");
-//        for (int i = 0; i < passwordSize; i++) {
-//            password.add(String.valueOf(random.nextInt(passwordSymbolLimit)));
-//        }
-        String password = "00000000";
-        return passwordEncoder.encode(password);
+        StringJoiner password = new StringJoiner("");
+        for (int i = 0; i < passwordSize; i++) {
+            password.add(String.valueOf(random.nextInt(passwordSymbolLimit)));
+        }
+        return passwordEncoder.encode(password.toString());
     }
 }

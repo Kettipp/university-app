@@ -1,4 +1,4 @@
-package ua.com.foxminded.unirsityapp.service;
+package ua.com.foxminded.universityapp.service;
 
 
 import org.junit.jupiter.api.Test;
@@ -7,7 +7,6 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.test.context.SpringBootTest;
 import ua.com.foxminded.universityapp.config.UniversityProperties;
 import ua.com.foxminded.universityapp.model.entity.Course;
-import ua.com.foxminded.universityapp.service.Generate;
 import ua.com.foxminded.universityapp.service.impl.CourseGenerator;
 
 import java.util.List;

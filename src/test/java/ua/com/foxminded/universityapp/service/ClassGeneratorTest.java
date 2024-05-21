@@ -1,4 +1,4 @@
-package ua.com.foxminded.unirsityapp.service;
+package ua.com.foxminded.universityapp.service;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +11,6 @@ import ua.com.foxminded.universityapp.repository.GroupRepository;
 import ua.com.foxminded.universityapp.model.entity.*;
 import ua.com.foxminded.universityapp.model.entity.Class;
 import ua.com.foxminded.universityapp.repository.UserRepository;
-import ua.com.foxminded.universityapp.service.Generate;
 import ua.com.foxminded.universityapp.service.impl.ClassGenerator;
 import ua.com.foxminded.universityapp.service.impl.CourseServiceImpl;
 import ua.com.foxminded.universityapp.service.impl.GroupServiceImpl;
