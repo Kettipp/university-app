@@ -1,6 +1,7 @@
 package ua.com.foxminded.universityapp.service;
 
 import org.junit.jupiter.api.Test;
+import org.postgresql.util.PSQLException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -31,58 +32,57 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @DataJpaTest
 @ContextConfiguration(classes = TestConfig.class)
-@Testcontainers
+//@Testcontainers
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@MockBean({ClassGenerator.class, CourseGenerator.class, UsersGenerator.class})
 public class ClassServiceTest {
 
-    @Container
-    private static final PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:latest");
-
-    @DynamicPropertySource
-    static void configureProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.datasource.url", postgreSQLContainer::getJdbcUrl);
-        registry.add("spring.datasource.username", postgreSQLContainer::getUsername);
-        registry.add("spring.datasource.password", postgreSQLContainer::getPassword);
-
-    }
+//    @Container
+//    private static final PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:latest");
+//
+//    @DynamicPropertySource
+//    static void configureProperties(DynamicPropertyRegistry registry) {
+//        registry.add("spring.datasource.url", postgreSQLContainer::getJdbcUrl);
+//        registry.add("spring.datasource.username", postgreSQLContainer::getUsername);
+//        registry.add("spring.datasource.password", postgreSQLContainer::getPassword);
+//
+//    }
 
     @Autowired
     private ClassRepository classRepository;
     @Autowired
-    private UserRepository userRepository;
+    private GroupRepository groupRepository;
     @Autowired
     private CourseRepository courseRepository;
     @Autowired
-    private GroupRepository groupRepository;
+    private UserRepository userRepository;
     @Autowired
     private ClassService classService;
-    @MockBean
-    private ClassGenerator classGenerator;
-    @MockBean
-    private CourseGenerator courseGenerator;
-    @MockBean
-    private GroupGenerator groupGenerator;
-    @MockBean
-    private UsersGenerator usersGenerator;
-    @MockBean
-    private Random random;
-
 
     @Test
     public void changeClass_shouldThrowException_whenReceiveClassWhichAlreadyExist() {
         Group group = Group.builder().name("gr1").build();
+        Group group2 = Group.builder().name("gr2").build();
         groupRepository.saveAndFlush(group);
-        Class class1 = Class.builder().day(DayOfWeek.MONDAY).time(ClassTime.FIRST).group(group).build();
-        Class class2 = Class.builder().day(DayOfWeek.MONDAY).time(ClassTime.SECOND).group(group).build();
-        Class class3 = Class.builder().day(DayOfWeek.MONDAY).time(ClassTime.THIRD).group(group).build();
-        Class class4 = Class.builder().day(DayOfWeek.MONDAY).time(ClassTime.FOURTH).group(group).build();
-        classRepository.saveAllAndFlush(List.of(class1, class2, class3, class4));
-        assertThrows(Exception.class, () -> classService.changeClass(
+        groupRepository.saveAndFlush(group2);
+        Course course = Course.builder().name("course").build();
+        courseRepository.save(course);
+        Teacher teacher = Teacher.builder().firstName("Liam").lastName("Smith").username("aaaa").password("1111").build();
+        userRepository.save(teacher);
+        Class class1 = Class.builder().day(DayOfWeek.MONDAY).time(ClassTime.FIRST).group(group).course(course).teacher(teacher).build();
+        Class class2 = Class.builder().day(DayOfWeek.MONDAY).time(ClassTime.SECOND).group(group).course(course).teacher(teacher).build();
+        Class class3 = Class.builder().day(DayOfWeek.MONDAY).time(ClassTime.THIRD).group(group).course(course).teacher(teacher).build();
+        Class class4 = Class.builder().day(DayOfWeek.MONDAY).time(ClassTime.FOURTH).group(group).course(course).teacher(teacher).build();
+        Class class5 = Class.builder().day(DayOfWeek.MONDAY).time(ClassTime.FOURTH).group(group2).course(course).teacher(teacher).build();
+        classRepository.saveAllAndFlush(List.of(class1, class2, class3, class4, class5));
+        assertThrows(PSQLException.class, () -> classService.changeClass(
                 ClassDTO.builder()
                         .id(class4.getId())
                         .day(DayOfWeek.MONDAY)
-                        .time(ClassTime.FIRST)
-                        .groupId(group.getId())
+                        .time(ClassTime.FOURTH)
+                        .groupId(group2.getId())
+                        .courseId(course.getId())
+                        .teacherId(teacher.getId())
                         .build()
         ));
     }

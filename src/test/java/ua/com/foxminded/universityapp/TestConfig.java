@@ -10,7 +10,7 @@ import ua.com.foxminded.universityapp.model.entity.Group;
 import ua.com.foxminded.universityapp.model.entity.Teacher;
 
 @SpringBootConfiguration
-@EnableJpaRepositories(basePackages = {"ua.com.foxminded.universityapp.repository", "ua.com.foxminded.universityapp.service"})
+@EnableJpaRepositories(basePackages = "ua.com.foxminded.universityapp.repository")
 @ComponentScan(basePackages = {"ua.com.foxminded.universityapp.repository", "ua.com.foxminded.universityapp.service"})
 @EntityScan(basePackageClasses = {Class.class, Course.class, Group.class, Teacher.class})
 public class TestConfig {

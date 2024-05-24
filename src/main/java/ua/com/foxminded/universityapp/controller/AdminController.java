@@ -82,7 +82,7 @@ public class AdminController {
     @GetMapping("/editSchedule/{id}")
     public String editSchedule(Model model, @PathVariable long id) {
         appendModelWithData(model);
-        ua.com.foxminded.universityapp.model.entity.Class clas = classService.getById(id);
+        Class clas = classService.getById(id);
         model.addAttribute("clas", clas);
         return "editSchedule";
     }
