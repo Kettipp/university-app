@@ -1,13 +1,11 @@
 package ua.com.foxminded.universityapp.service;
 
 import org.junit.jupiter.api.Test;
-import org.postgresql.util.PSQLException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.ContextConfiguration;
-import ua.com.foxminded.universityapp.TestConfig;
+import org.springframework.dao.DataIntegrityViolationException;
 import ua.com.foxminded.universityapp.model.entity.*;
 import ua.com.foxminded.universityapp.model.entity.Class;
 import ua.com.foxminded.universityapp.repository.ClassRepository;
@@ -23,8 +21,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@DataJpaTest
-@ContextConfiguration(classes = TestConfig.class)
+@SpringBootTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @MockBean({ClassGenerator.class, CourseGenerator.class, UsersGenerator.class})
 public class ClassServiceTest {
@@ -56,7 +53,7 @@ public class ClassServiceTest {
         Class class4 = Class.builder().day(DayOfWeek.MONDAY).time(ClassTime.FOURTH).group(group).course(course).teacher(teacher).build();
         Class class5 = Class.builder().day(DayOfWeek.MONDAY).time(ClassTime.FOURTH).group(group2).course(course).teacher(teacher).build();
         classRepository.saveAllAndFlush(List.of(class1, class2, class3, class4, class5));
-        assertThrows(PSQLException.class, () -> classService.changeClass(
+        assertThrows(DataIntegrityViolationException.class, () -> classService.changeClass(
                 ClassDTO.builder()
                         .id(class4.getId())
                         .day(DayOfWeek.MONDAY)

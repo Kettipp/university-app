@@ -1,6 +1,7 @@
 spring:
   datasource:
     url: jdbc:tc:postgresql:latest:///test
+    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
 university:
   courseNames:
     - Mathematics
@@ -30,3 +31,4 @@ university:
   adminLastName: admin
   adminLogin: universityAdmin@com.ua
   adminPassword: 11111111
+isDebug: false
